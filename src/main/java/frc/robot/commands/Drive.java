@@ -35,7 +35,7 @@ public class Drive extends Command {
   // controllable.
   @Override
   public void execute() {
-    driveSubsystem.driveArcade(-controller.getLeftY() * DRIVE_SCALING, -controller.getRightY() * DRIVE_SCALING);
+    driveSubsystem.driveArcade(-controller.getLeftY() * DRIVE_SCALING, -controller.getRightX() * DRIVE_SCALING);
   }
 
   // Called once the command ends or is interrupted.
