@@ -16,6 +16,7 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.CANShooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -28,6 +29,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
+  private final CANShooter shooter = new CANShooter();
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -74,6 +76,8 @@ public class RobotContainer {
     // the intake
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
 
+    operatorController.y().whileTrue(shooter.shoot());
+
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
     // controller. The Y axis of the controller is inverted so that pushing the
@@ -82,6 +86,8 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));
 
     fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
+
+    shooter.setDefaultCommand(shooter.stop()); // TODO chg to idle when on robot
   }
 
   /**
