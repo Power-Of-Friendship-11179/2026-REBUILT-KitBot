@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
 
@@ -71,7 +72,11 @@ public class CANDriveSubsystem extends SubsystemBase {
   }
 
   public void driveArcade(double xSpeed, double zRotation) {
-    drive.arcadeDrive(xSpeed, zRotation);
+    double driveStraightFudgeRotation = 0.0;
+    if (Math.abs(zRotation) < RobotDriveBase.kDefaultDeadband) {
+      driveStraightFudgeRotation = -1 * xSpeed * 0.20;
+    }
+    drive.arcadeDrive(xSpeed, zRotation + driveStraightFudgeRotation);
   }
 
   public void driveTank(double leftSpeed, double rightSpeed) {
