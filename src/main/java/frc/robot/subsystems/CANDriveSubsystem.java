@@ -4,16 +4,25 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.DriveConstants.DRIVE_MOTOR_CURRENT_LIMIT;
+import static frc.robot.Constants.DriveConstants.LEFT_FOLLOWER_ID;
+import static frc.robot.Constants.DriveConstants.LEFT_LEADER_ID;
+import static frc.robot.Constants.DriveConstants.RIGHT_FOLLOWER_ID;
+import static frc.robot.Constants.DriveConstants.RIGHT_LEADER_ID;
+
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.Constants.DriveConstants.*;
 
 public class CANDriveSubsystem extends SubsystemBase {
   private final SparkMax leftLeader;
@@ -24,28 +33,18 @@ public class CANDriveSubsystem extends SubsystemBase {
   private final DifferentialDrive drive;
 
   public CANDriveSubsystem() {
-    // create brushed motors for drive
     leftLeader = new SparkMax(LEFT_LEADER_ID, MotorType.kBrushed);
     leftFollower = new SparkMax(LEFT_FOLLOWER_ID, MotorType.kBrushed);
     rightLeader = new SparkMax(RIGHT_LEADER_ID, MotorType.kBrushed);
     rightFollower = new SparkMax(RIGHT_FOLLOWER_ID, MotorType.kBrushed);
 
-    // set up differential drive class
     drive = new DifferentialDrive(leftLeader, rightLeader);
 
-    // Set can timeout. Because this project only sets parameters once on
-    // construction, the timeout can be long without blocking robot operation. Code
-    // which sets or gets parameters during operation may need a shorter timeout.
     leftLeader.setCANTimeout(250);
     rightLeader.setCANTimeout(250);
     leftFollower.setCANTimeout(250);
     rightFollower.setCANTimeout(250);
 
-    // Create the configuration to apply to motors. Voltage compensation
-    // helps the robot perform more similarly on different
-    // battery voltages (at the cost of a little bit of top speed on a fully charged
-    // battery). The current limit helps prevent tripping
-    // breakers.
     SparkMaxConfig config = new SparkMaxConfig();
     config.voltageCompensation(12);
     config.smartCurrentLimit(DRIVE_MOTOR_CURRENT_LIMIT);
@@ -68,8 +67,7 @@ public class CANDriveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-  }
+  public void periodic() {}
 
   public void driveArcade(double xSpeed, double zRotation) {
     double driveStraightFudgeRotation = 0.0;
