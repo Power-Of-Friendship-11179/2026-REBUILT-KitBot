@@ -51,6 +51,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected().getCommand();
+    final AutoSupplier autoSupplier = autoChooser.getSelected();
+    driveSubsystem.setRobotStartingPose(autoSupplier.getStartingPose2d());
+    return autoSupplier.getCommand();
   }
 }

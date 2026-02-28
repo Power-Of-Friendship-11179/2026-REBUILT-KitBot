@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import static frc.robot.Constants.OperatorConstants.*;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.CANDriveSubsystem;
@@ -35,13 +36,15 @@ public class Drive extends Command {
   // controllable.
   @Override
   public void execute() {
-    driveSubsystem.driveArcade(-controller.getLeftY() * DRIVE_SCALING, -controller.getRightX() * DRIVE_SCALING);
+    double xSpeed = MathUtil.applyDeadband(-controller.getLeftY() * DRIVE_SCALING, DRIVE_DEADBAND);
+    double zRotation = MathUtil.applyDeadband(-controller.getRightX() * ROTATION_SCALING, DRIVE_DEADBAND);
+    driveSubsystem.gyroStabilizedArcadeDrive(xSpeed, zRotation);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveSubsystem.driveArcade(0, 0);
+    driveSubsystem.stop();
   }
 
   // Returns true when the command should end.

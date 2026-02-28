@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Meters;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -70,10 +71,13 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
 
+    // Joystick input deadband. Same as default for now.
+    public static final double DRIVE_DEADBAND = RobotDriveBase.kDefaultDeadband;
+
     // This value is multiplied by the joystick value when rotating the robot to
     // help avoid turning too fast and beign difficult to control
     public static final double DRIVE_SCALING = .7;
-    public static final double ROTATION_SCALING = .8;
+    public static final double ROTATION_SCALING = .7;
   }
 
   public static final class FieldConstants {

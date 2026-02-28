@@ -19,6 +19,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -73,6 +74,11 @@ public class CANDriveSubsystem extends SubsystemBase {
   private final DifferentialDrivePoseEstimator odometry;
   private final Field2d field = new Field2d();
 
+  // variables used in gyro stablized arcade drive (GSAD) and nowhere else.
+  private boolean gsadActive = false;
+  private double gsadTargetHeadingDegrees = 0.0;
+  private static final double GSAD_KP = 0.005; // Just P if PID is used TODO tune
+
   public CANDriveSubsystem() {
     leftLeader.setCANTimeout(250);
     rightLeader.setCANTimeout(250);
@@ -107,6 +113,9 @@ public class CANDriveSubsystem extends SubsystemBase {
 
     leftEncoder = leftLeader.getEncoder();
     rightEncoder = rightLeader.getEncoder();
+
+    // The code here will handle deadbands.
+    drive.setDeadband(0.0);
 
     // TODO add custom standard deviations if needed.
     odometry = new DifferentialDrivePoseEstimator(
@@ -149,6 +158,7 @@ public class CANDriveSubsystem extends SubsystemBase {
    */
   public void setRobotStartingPose(Pose2d startingPose) {
     odometry.resetPosition(getYaw(), leftEncoder.getPosition(), rightEncoder.getPosition(), startingPose);
+    gsadActive = false; // force GSAD to get updated heading info on first input.
   }
 
   /**
@@ -169,12 +179,35 @@ public class CANDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pose Heading", currentPose2d.getRotation().getDegrees());
   }
 
+  public void stop() {
+    drive.arcadeDrive(0.0, 0.0);
+  }
+
   public void driveArcade(double xSpeed, double zRotation) {
     double driveStraightFudgeRotation = 0.0;
     if (Math.abs(zRotation) < RobotDriveBase.kDefaultDeadband) {
       driveStraightFudgeRotation = -1 * xSpeed * 0.20;
     }
     drive.arcadeDrive(xSpeed, zRotation + driveStraightFudgeRotation);
+  }
+
+  public void gyroStabilizedArcadeDrive(double xSpeed, double zRotation) {
+    xSpeed = MathUtil.applyDeadband(xSpeed, RobotDriveBase.kDefaultDeadband);
+    zRotation = MathUtil.applyDeadband(zRotation, RobotDriveBase.kDefaultDeadband);
+    if (zRotation != 0.0) {
+      // Driver (human or auto) is rotating the robot.
+      gsadActive = false;
+    } else {
+      if (!gsadActive) {
+        // Just stopped rotating or first time since starting pose set.
+        // Grab the target heading and set gsad active.
+        gsadTargetHeadingDegrees = getPose().getRotation().getDegrees();
+        gsadActive = true;
+      }
+      // Calculate corrective gsad rotation value.
+      zRotation = (gsadTargetHeadingDegrees - getPose().getRotation().getDegrees()) * GSAD_KP;
+    }
+    drive.arcadeDrive(xSpeed, zRotation);
   }
 
   public void driveTank(double leftSpeed, double rightSpeed) {
