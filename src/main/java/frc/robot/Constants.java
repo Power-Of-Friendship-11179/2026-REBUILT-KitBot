@@ -7,6 +7,8 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -72,5 +74,24 @@ public final class Constants {
     // help avoid turning too fast and beign difficult to control
     public static final double DRIVE_SCALING = .7;
     public static final double ROTATION_SCALING = .8;
+  }
+
+  public static final class FieldConstants {
+    // TODO Andymark layout is used in NC. At world champs, we will probably need to
+    // switch. Note that all the measurements in this class could change too.
+    public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout
+        .loadField(AprilTagFields.k2026RebuiltAndymark);
+
+    public static final double TO_STARTING_LINE_METERS = Inches.of(156.06).in(Meters);
+    public static final double LINE_WIDTHS_METERS = Inches.of(2.0).in(Meters);
+  }
+
+  public static final class RobotConstants {
+    // TODO measure these
+    public static final double FRAME_WIDTH_METERS = Inches.of(26.5).in(Meters);
+    public static final double FRAME_LENGTH_METERS = Inches.of(26.5).in(Meters);
+    public static final double BUMPER_WIDTH_METERS = Inches.of(3.5).in(Meters);
+    public static final double WIDTH_WITH_BUMPERS_METERS = FRAME_WIDTH_METERS + (2.0 * BUMPER_WIDTH_METERS);
+    public static final double LENGTH_WITH_BUMPERS_METERS = FRAME_LENGTH_METERS + (2.0 * BUMPER_WIDTH_METERS);
   }
 }

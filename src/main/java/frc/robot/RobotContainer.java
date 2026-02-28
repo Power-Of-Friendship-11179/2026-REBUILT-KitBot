@@ -9,8 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import static frc.robot.Constants.OperatorConstants.*;
 
+import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
-import frc.robot.auto.ExampleAuto;
+import frc.robot.auto.ShootPreloadsOnly;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
@@ -32,12 +33,12 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(DRIVER_CONTROLLER_PORT);
   private final CommandXboxController operatorController = new CommandXboxController(OPERATOR_CONTROLLER_PORT);
 
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private final SendableChooser<AutoSupplier> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
     configureBindings();
-    autoChooser.setDefaultOption("Do Nothing", new DoNothing());
-    autoChooser.addOption("Example Auto", new ExampleAuto(driveSubsystem, fuelSubsystem));
+    autoChooser.setDefaultOption("Do Nothing", DoNothing.getAutoSupplier());
+    autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
   }
 
   private void configureBindings() {
@@ -50,6 +51,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return autoChooser.getSelected().getCommand();
   }
 }
