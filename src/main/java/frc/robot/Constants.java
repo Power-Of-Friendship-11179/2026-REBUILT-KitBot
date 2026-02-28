@@ -34,10 +34,10 @@ public final class Constants {
     // likelihood of tripping breakers or damaging CIM motors
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
 
-    public static final boolean LEFT_ENCODER_REVERSED = false; //TODO check
-    public static final boolean RIGHT_ENCODER_REVERSED = true; //TODO check
+    public static final boolean LEFT_ENCODER_REVERSED = false;
+    public static final boolean RIGHT_ENCODER_REVERSED = true;
 
-    public static final int ENCODER_CPR = 8192; // TODO check
+    public static final int ENCODER_CPR = 8192;
     public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(6.29);
     public static final double WHEEL_TRAVEL_METERS_PER_ROT = WHEEL_DIAMETER_METERS * Math.PI;
     public static final double WHEEL_VELOCITY_RPM_TO_MPS = WHEEL_TRAVEL_METERS_PER_ROT * (1.0 / 60.0);
@@ -91,7 +91,6 @@ public final class Constants {
   }
 
   public static final class RobotConstants {
-    // TODO measure these
     public static final double FRAME_WIDTH_METERS = Inches.of(26.5).in(Meters);
     public static final double FRAME_LENGTH_METERS = Inches.of(26.5).in(Meters);
     public static final double BUMPER_WIDTH_METERS = Inches.of(3.25).in(Meters);

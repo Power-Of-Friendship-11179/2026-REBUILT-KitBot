@@ -77,7 +77,7 @@ public class CANDriveSubsystem extends SubsystemBase {
   // variables used in gyro stablized arcade drive (GSAD) and nowhere else.
   private boolean gsadActive = false;
   private double gsadTargetHeadingDegrees = 0.0;
-  private static final double GSAD_KP = 0.025; // Just P if PID is used TODO tune
+  private static final double GSAD_KP = 0.025; // Just P if PID is used
 
   public CANDriveSubsystem() {
     leftLeader.setCANTimeout(250);
