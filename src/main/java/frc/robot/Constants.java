@@ -94,7 +94,7 @@ public final class Constants {
     // TODO measure these
     public static final double FRAME_WIDTH_METERS = Inches.of(26.5).in(Meters);
     public static final double FRAME_LENGTH_METERS = Inches.of(26.5).in(Meters);
-    public static final double BUMPER_WIDTH_METERS = Inches.of(3.5).in(Meters);
+    public static final double BUMPER_WIDTH_METERS = Inches.of(3.25).in(Meters);
     public static final double WIDTH_WITH_BUMPERS_METERS = FRAME_WIDTH_METERS + (2.0 * BUMPER_WIDTH_METERS);
     public static final double LENGTH_WITH_BUMPERS_METERS = FRAME_LENGTH_METERS + (2.0 * BUMPER_WIDTH_METERS);
   }
