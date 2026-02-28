@@ -38,7 +38,7 @@ public final class Constants {
     public static final boolean RIGHT_ENCODER_REVERSED = true; //TODO check
 
     public static final int ENCODER_CPR = 8192; // TODO check
-    public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(6);
+    public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(6.29);
     public static final double WHEEL_TRAVEL_METERS_PER_ROT = WHEEL_DIAMETER_METERS * Math.PI;
     public static final double WHEEL_VELOCITY_RPM_TO_MPS = WHEEL_TRAVEL_METERS_PER_ROT * (1.0 / 60.0);
 

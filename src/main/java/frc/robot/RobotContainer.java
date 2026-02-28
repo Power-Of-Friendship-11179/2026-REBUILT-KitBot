@@ -5,7 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import static frc.robot.Constants.OperatorConstants.*;
 
@@ -39,12 +41,16 @@ public class RobotContainer {
     configureBindings();
     autoChooser.setDefaultOption("Do Nothing", DoNothing.getAutoSupplier());
     autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
+    SmartDashboard.putData(autoChooser);
   }
 
   private void configureBindings() {
     operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
     operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
+
+    // TESTING ONLY
+    operatorController.start().onTrue(Commands.runOnce(driveSubsystem::testingOnlyReset));
 
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));
     fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));

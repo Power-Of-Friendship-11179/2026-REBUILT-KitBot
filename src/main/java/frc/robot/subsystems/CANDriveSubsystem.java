@@ -77,7 +77,7 @@ public class CANDriveSubsystem extends SubsystemBase {
   // variables used in gyro stablized arcade drive (GSAD) and nowhere else.
   private boolean gsadActive = false;
   private double gsadTargetHeadingDegrees = 0.0;
-  private static final double GSAD_KP = 0.005; // Just P if PID is used TODO tune
+  private static final double GSAD_KP = 0.025; // Just P if PID is used TODO tune
 
   public CANDriveSubsystem() {
     leftLeader.setCANTimeout(250);
@@ -161,6 +161,12 @@ public class CANDriveSubsystem extends SubsystemBase {
     gsadActive = false; // force GSAD to get updated heading info on first input.
   }
 
+  public void testingOnlyReset() {
+    setRobotStartingPose(Pose2d.kZero);
+    leftEncoder.setPosition(0.0);
+    rightEncoder.setPosition(0.0);
+  }
+
   /**
    * @return the current odometry calculate robot pose. This is a "blue origin"
    *         pose with the rotation adjusted for starting angle. The angle is
@@ -177,6 +183,10 @@ public class CANDriveSubsystem extends SubsystemBase {
     field.setRobotPose(currentPose2d);
     SmartDashboard.putNumber("Raw Yaw", getYawImpl());
     SmartDashboard.putNumber("Pose Heading", currentPose2d.getRotation().getDegrees());
+    SmartDashboard.putNumber("Left Side Position", leftEncoder.getPosition());
+    SmartDashboard.putNumber("Right Side Position", rightEncoder.getPosition());
+    SmartDashboard.putBoolean("GSAD", gsadActive);
+    SmartDashboard.putNumber("GSAD Target", gsadTargetHeadingDegrees);
   }
 
   public void stop() {
@@ -194,18 +204,23 @@ public class CANDriveSubsystem extends SubsystemBase {
   public void gyroStabilizedArcadeDrive(double xSpeed, double zRotation) {
     xSpeed = MathUtil.applyDeadband(xSpeed, RobotDriveBase.kDefaultDeadband);
     zRotation = MathUtil.applyDeadband(zRotation, RobotDriveBase.kDefaultDeadband);
-    if (zRotation != 0.0) {
-      // Driver (human or auto) is rotating the robot.
+    if ((zRotation != 0.0) || (xSpeed == 0.0)) {
+      // Driver (human or auto) is rotating the robot or stopped.
       gsadActive = false;
-    } else {
+    } else if (xSpeed != 0.0) {
+      // Driving but with zero rotation.
       if (!gsadActive) {
         // Just stopped rotating or first time since starting pose set.
         // Grab the target heading and set gsad active.
-        gsadTargetHeadingDegrees = getPose().getRotation().getDegrees();
+        // Use raw yaw is better since it is continuous and we avoid the
+        // 180 to -180 jump which can cause uncontrolled spinning. It is
+        // also okay to use since we are only using the delta and not
+        // the angle value itself.
+        gsadTargetHeadingDegrees = getYawImpl();
         gsadActive = true;
       }
       // Calculate corrective gsad rotation value.
-      zRotation = (gsadTargetHeadingDegrees - getPose().getRotation().getDegrees()) * GSAD_KP;
+      zRotation = (gsadTargetHeadingDegrees - getYawImpl()) * GSAD_KP;
     }
     drive.arcadeDrive(xSpeed, zRotation);
   }
