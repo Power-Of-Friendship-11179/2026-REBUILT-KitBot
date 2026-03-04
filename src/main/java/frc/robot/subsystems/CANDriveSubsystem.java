@@ -18,13 +18,14 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -66,7 +67,7 @@ public class CANDriveSubsystem extends SubsystemBase {
 
   private final DifferentialDrive drive = new DifferentialDrive(leftLeader, rightLeader);
 
-  private final ADIS16470_IMU gyro = new ADIS16470_IMU();
+  private final AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
   private final RelativeEncoder leftEncoder;
   private final RelativeEncoder rightEncoder;
 
@@ -146,7 +147,7 @@ public class CANDriveSubsystem extends SubsystemBase {
    * @return the current counterclockwise positive robot yaw.
    */
   private double getYawImpl() {
-    return gyro.getAngle();
+    return -gyro.getAngle();
   }
 
   /**
