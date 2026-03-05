@@ -13,6 +13,8 @@ import static frc.robot.Constants.OperatorConstants.*;
 
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
+import frc.robot.auto.LeftSideShootPreloadsOnly;
+import frc.robot.auto.RightSideShootPreloadsOnly;
 import frc.robot.auto.ShootPreloadsOnly;
 import frc.robot.commands.Agitate;
 import frc.robot.commands.Drive;
@@ -42,6 +44,8 @@ public class RobotContainer {
     configureBindings();
     autoChooser.setDefaultOption("Do Nothing", DoNothing.getAutoSupplier());
     autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
+    autoChooser.addOption("Right Side Shoot Preloads Only", RightSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
+    autoChooser.addOption("Left Side Shoot Preloads Only", LeftSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 

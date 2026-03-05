@@ -14,26 +14,27 @@ import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 
 /**
- * An autonomous command that starts at the hub, backs off a bit, shoots the
- * preloaded fuel, and ends. The robot should be placed centered on the hub with
- * the battery side bumpers up against the hub.
+ * See {@link RightSideShootPreloadsOnly} and position similarly but to the left
+ * of the hub.
  */
-public class ShootPreloadsOnly extends SequentialCommandGroup {
+public class LeftSideShootPreloadsOnly extends SequentialCommandGroup {
   public static final AutoSupplier getAutoSupplier(
       final CANDriveSubsystem driveSubsystem,
       final CANFuelSubsystem ballSubsystem) {
     return new AutoSupplier(
-        () -> new ShootPreloadsOnly(driveSubsystem, ballSubsystem),
+        () -> new LeftSideShootPreloadsOnly(driveSubsystem, ballSubsystem),
         new Pose2d(
             FieldConstants.TO_STARTING_LINE_METERS + FieldConstants.LINE_WIDTHS_METERS
-                - (RobotConstants.LENGTH_WITH_BUMPERS_METERS / 2.0),
-            FieldConstants.FIELD_LAYOUT.getFieldWidth() / 2.0,
-            Rotation2d.fromDegrees(180.0)));
+                - (RobotConstants.DIAGONAL_WITH_BUMPERS_METERS / 2.0),
+            (FieldConstants.FIELD_LAYOUT.getFieldWidth() / 2.0)
+                + FieldConstants.SIDE_PRELOADS_ONLY_Y_OFFSET_METERS,
+            Rotation2d.fromDegrees(-135.0)));
   }
 
-  private ShootPreloadsOnly(CANDriveSubsystem driveSubsystem, CANFuelSubsystem ballSubsystem) {
+  private LeftSideShootPreloadsOnly(CANDriveSubsystem driveSubsystem, CANFuelSubsystem ballSubsystem) {
     addCommands(
-        new AutoDrive(driveSubsystem, 0.7, 0.0).withTimeout(.5),
+        // TODO validate this. No driving may be needed.
+        new AutoDrive(driveSubsystem, 0.5, 0.0).withTimeout(.25),
         new ShootPreloadsSequence(ballSubsystem));
   }
 }

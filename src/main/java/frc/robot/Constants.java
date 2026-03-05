@@ -89,6 +89,10 @@ public final class Constants {
 
     public static final double TO_STARTING_LINE_METERS = Inches.of(156.06).in(Meters);
     public static final double LINE_WIDTHS_METERS = Inches.of(2.0).in(Meters);
+    public static final double HUB_X_DEPTH_METERS = Inches.of(47.0).in(Meters);
+    // Half 45 deg robot plus half hub depth = sides of position and aim triangle.
+    public static final double SIDE_PRELOADS_ONLY_Y_OFFSET_METERS = (RobotConstants.DIAGONAL_WITH_BUMPERS_METERS / 2.0)
+        + (HUB_X_DEPTH_METERS / 2.0);
   }
 
   public static final class RobotConstants {
@@ -97,5 +101,7 @@ public final class Constants {
     public static final double BUMPER_WIDTH_METERS = Inches.of(3.25).in(Meters);
     public static final double WIDTH_WITH_BUMPERS_METERS = FRAME_WIDTH_METERS + (2.0 * BUMPER_WIDTH_METERS);
     public static final double LENGTH_WITH_BUMPERS_METERS = FRAME_LENGTH_METERS + (2.0 * BUMPER_WIDTH_METERS);
+    public static final double DIAGONAL_WITH_BUMPERS_METERS = Math.sqrt(Math.pow(WIDTH_WITH_BUMPERS_METERS, 2.0)
+        + Math.pow(LENGTH_WITH_BUMPERS_METERS, 2.0));
   }
 }
