@@ -45,9 +45,9 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     autoChooser.setDefaultOption("Do Nothing", DoNothing.getAutoSupplier());
-    autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
-    autoChooser.addOption("Right Side Shoot Preloads Only", RightSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
-    autoChooser.addOption("Left Side Shoot Preloads Only", LeftSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
+    autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Right Side Shoot Preloads Only", RightSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Left Side Shoot Preloads Only", LeftSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 

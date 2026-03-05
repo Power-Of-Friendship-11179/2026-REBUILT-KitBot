@@ -12,6 +12,7 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.CANShooter;
 
 /**
  * See {@link RightSideShootPreloadsOnly} and position similarly but to the left
@@ -20,9 +21,10 @@ import frc.robot.subsystems.CANFuelSubsystem;
 public class LeftSideShootPreloadsOnly extends SequentialCommandGroup {
   public static final AutoSupplier getAutoSupplier(
       final CANDriveSubsystem driveSubsystem,
-      final CANFuelSubsystem ballSubsystem) {
+      final CANFuelSubsystem ballSubsystem,
+      final CANShooter shooterSubsystem) {
     return new AutoSupplier(
-        () -> new LeftSideShootPreloadsOnly(driveSubsystem, ballSubsystem),
+        () -> new LeftSideShootPreloadsOnly(driveSubsystem, ballSubsystem, shooterSubsystem),
         new Pose2d(
             FieldConstants.TO_STARTING_LINE_METERS + FieldConstants.LINE_WIDTHS_METERS
                 - (RobotConstants.DIAGONAL_WITH_BUMPERS_METERS / 2.0),
@@ -31,10 +33,13 @@ public class LeftSideShootPreloadsOnly extends SequentialCommandGroup {
             Rotation2d.fromDegrees(-135.0)));
   }
 
-  private LeftSideShootPreloadsOnly(CANDriveSubsystem driveSubsystem, CANFuelSubsystem ballSubsystem) {
+  private LeftSideShootPreloadsOnly(
+      final CANDriveSubsystem driveSubsystem,
+      final CANFuelSubsystem ballSubsystem,
+      final CANShooter shooterSubsystem) {
     addCommands(
         // TODO validate this. No driving may be needed.
         new AutoDrive(driveSubsystem, 0.5, 0.0).withTimeout(.25),
-        new ShootPreloadsSequence(ballSubsystem));
+        new ShootPreloadsSequence(ballSubsystem, shooterSubsystem));
   }
 }

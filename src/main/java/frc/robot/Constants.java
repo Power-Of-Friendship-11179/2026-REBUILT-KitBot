@@ -71,7 +71,7 @@ public final class Constants {
     public static final int SHOOTER_CURRENT_LIMIT = 60;
 
     public static final double SHOOTER_IDLE_VOLTAGE = 3;
-    public static final double SHOOTER_SHOOTING_VOLTAGE = 8;
+    public static final double SHOOTER_SHOOTING_VOLTAGE = 6.0;
   }
 
   public static final class OperatorConstants {

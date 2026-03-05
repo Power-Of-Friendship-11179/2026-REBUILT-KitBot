@@ -12,6 +12,7 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.CANShooter;
 
 /**
  * An autonomous command that starts at the hub, backs off a bit, shoots the
@@ -21,9 +22,10 @@ import frc.robot.subsystems.CANFuelSubsystem;
 public class ShootPreloadsOnly extends SequentialCommandGroup {
   public static final AutoSupplier getAutoSupplier(
       final CANDriveSubsystem driveSubsystem,
-      final CANFuelSubsystem ballSubsystem) {
+      final CANFuelSubsystem ballSubsystem,
+      final CANShooter shooterSubsystem) {
     return new AutoSupplier(
-        () -> new ShootPreloadsOnly(driveSubsystem, ballSubsystem),
+        () -> new ShootPreloadsOnly(driveSubsystem, ballSubsystem, shooterSubsystem),
         new Pose2d(
             FieldConstants.TO_STARTING_LINE_METERS + FieldConstants.LINE_WIDTHS_METERS
                 - (RobotConstants.LENGTH_WITH_BUMPERS_METERS / 2.0),
@@ -31,9 +33,12 @@ public class ShootPreloadsOnly extends SequentialCommandGroup {
             Rotation2d.fromDegrees(180.0)));
   }
 
-  private ShootPreloadsOnly(CANDriveSubsystem driveSubsystem, CANFuelSubsystem ballSubsystem) {
+  private ShootPreloadsOnly(
+      final CANDriveSubsystem driveSubsystem,
+      final CANFuelSubsystem ballSubsystem,
+      final CANShooter shooterSubsystem) {
     addCommands(
         new AutoDrive(driveSubsystem, 0.7, 0.0).withTimeout(.5),
-        new ShootPreloadsSequence(ballSubsystem));
+        new ShootPreloadsSequence(ballSubsystem, shooterSubsystem));
   }
 }
