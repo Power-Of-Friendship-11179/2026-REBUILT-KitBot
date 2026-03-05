@@ -14,6 +14,7 @@ import static frc.robot.Constants.OperatorConstants.*;
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
 import frc.robot.auto.ShootPreloadsOnly;
+import frc.robot.commands.Agitate;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
@@ -48,6 +49,7 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
     operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
+    operatorController.x().whileTrue(new Agitate(fuelSubsystem));
 
     // TESTING ONLY
     operatorController.start().onTrue(Commands.runOnce(driveSubsystem::testingOnlyReset));
