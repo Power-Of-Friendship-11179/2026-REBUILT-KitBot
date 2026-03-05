@@ -57,6 +57,7 @@ public final class Constants {
     // Voltage values for various fuel operations. These values may need to be tuned
     // based on exact robot construction.
     // See the Software Guide for tuning information
+    public static final double AGITATION_FEEDER_VOLTAGE = -9;
     public static final double INTAKING_FEEDER_VOLTAGE = 9;
     public static final double INTAKING_INTAKE_VOLTAGE = -5;
     public static final double LAUNCHING_FEEDER_VOLTAGE = -9;

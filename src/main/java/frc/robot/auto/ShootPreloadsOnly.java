@@ -9,8 +9,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.RobotConstants;
+import frc.robot.commands.Agitate;
 import frc.robot.commands.AutoDrive;
-import frc.robot.commands.Launch;
+import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 
@@ -34,7 +35,9 @@ public class ShootPreloadsOnly extends SequentialCommandGroup {
 
   private ShootPreloadsOnly(CANDriveSubsystem driveSubsystem, CANFuelSubsystem ballSubsystem) {
     addCommands(
-        new AutoDrive(driveSubsystem, 0.5, 0.0).withTimeout(.25),
-        new Launch(ballSubsystem).withTimeout(10));
+        new AutoDrive(driveSubsystem, 0.7, 0.0).withTimeout(.5),
+        new LaunchSequence(ballSubsystem).withTimeout(6),
+        new Agitate(ballSubsystem).withTimeout(3.0),
+        new LaunchSequence(ballSubsystem).withTimeout(6));
   }
 }
