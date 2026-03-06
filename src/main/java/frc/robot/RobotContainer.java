@@ -23,6 +23,7 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.CANShooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -34,6 +35,7 @@ import frc.robot.subsystems.CANFuelSubsystem;
 public class RobotContainer {
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
+  private final CANShooter shooterSubsystem = new CANShooter();
 
   private final CommandXboxController driverController = new CommandXboxController(DRIVER_CONTROLLER_PORT);
   private final CommandXboxController operatorController = new CommandXboxController(OPERATOR_CONTROLLER_PORT);
@@ -43,15 +45,15 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     autoChooser.setDefaultOption("Do Nothing", DoNothing.getAutoSupplier());
-    autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
-    autoChooser.addOption("Right Side Shoot Preloads Only", RightSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
-    autoChooser.addOption("Left Side Shoot Preloads Only", LeftSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem));
+    autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Right Side Shoot Preloads Only", RightSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Left Side Shoot Preloads Only", LeftSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 
   private void configureBindings() {
     operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
-    operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
+    operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem, shooterSubsystem));
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
     operatorController.x().whileTrue(new Agitate(fuelSubsystem));
 
@@ -60,6 +62,7 @@ public class RobotContainer {
 
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));
     fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
+    shooterSubsystem.setDefaultCommand(shooterSubsystem.idle());
   }
 
   public Command getAutonomousCommand() {

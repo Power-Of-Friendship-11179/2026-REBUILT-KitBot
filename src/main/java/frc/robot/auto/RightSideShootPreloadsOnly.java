@@ -12,6 +12,7 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.CANShooter;
 
 /**
  * An autonomous command that starts to the right of the hub but pointed at the
@@ -26,9 +27,10 @@ import frc.robot.subsystems.CANFuelSubsystem;
 public class RightSideShootPreloadsOnly extends SequentialCommandGroup {
   public static final AutoSupplier getAutoSupplier(
       final CANDriveSubsystem driveSubsystem,
-      final CANFuelSubsystem ballSubsystem) {
+      final CANFuelSubsystem ballSubsystem,
+      final CANShooter shooterSubsystem) {
     return new AutoSupplier(
-        () -> new RightSideShootPreloadsOnly(driveSubsystem, ballSubsystem),
+        () -> new RightSideShootPreloadsOnly(driveSubsystem, ballSubsystem, shooterSubsystem),
         new Pose2d(
             FieldConstants.TO_STARTING_LINE_METERS + FieldConstants.LINE_WIDTHS_METERS
                 - (RobotConstants.DIAGONAL_WITH_BUMPERS_METERS / 2.0),
@@ -37,10 +39,13 @@ public class RightSideShootPreloadsOnly extends SequentialCommandGroup {
             Rotation2d.fromDegrees(-135.0)));
   }
 
-  private RightSideShootPreloadsOnly(CANDriveSubsystem driveSubsystem, CANFuelSubsystem ballSubsystem) {
+  private RightSideShootPreloadsOnly(
+      final CANDriveSubsystem driveSubsystem,
+      final CANFuelSubsystem ballSubsystem,
+      final CANShooter shooterSubsystem) {
     addCommands(
         // TODO validate this. No driving may be needed.
         new AutoDrive(driveSubsystem, 0.5, 0.0).withTimeout(.25),
-        new ShootPreloadsSequence(ballSubsystem));
+        new ShootPreloadsSequence(ballSubsystem, shooterSubsystem));
   }
 }
