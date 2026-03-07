@@ -13,9 +13,11 @@ import static frc.robot.Constants.OperatorConstants.*;
 
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
+import frc.robot.auto.DriveAway;
 import frc.robot.auto.LeftSideShootPreloadsOnly;
 import frc.robot.auto.RightSideShootPreloadsOnly;
 import frc.robot.auto.ShootPreloadsOnly;
+import frc.robot.auto.ShootPreloadsSequence;
 import frc.robot.commands.Agitate;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Eject;
@@ -58,6 +60,8 @@ public class RobotContainer {
     operatorController.x().whileTrue(new Agitate(fuelSubsystem));
 
     // TESTING ONLY
+    driverController.b().whileTrue(new DriveAway(driveSubsystem, 0.7, .5));
+    driverController.y().whileTrue(new ShootPreloadsSequence(fuelSubsystem, shooterSubsystem));
     operatorController.start().onTrue(Commands.runOnce(driveSubsystem::testingOnlyReset));
 
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));

@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.RobotConstants;
-import frc.robot.commands.AutoDrive;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CANShooter;
@@ -39,7 +38,7 @@ public class LeftSideShootPreloadsOnly extends SequentialCommandGroup {
       final CANShooter shooterSubsystem) {
     addCommands(
         // TODO validate this. No driving may be needed.
-        new AutoDrive(driveSubsystem, 0.5, 0.0).withTimeout(.25),
+        new DriveAway(driveSubsystem, 0.5, .25),
         new ShootPreloadsSequence(ballSubsystem, shooterSubsystem));
   }
 }
