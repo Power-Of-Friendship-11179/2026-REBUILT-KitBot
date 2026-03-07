@@ -54,14 +54,14 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
+    operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem, shooterSubsystem));
     operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem, shooterSubsystem));
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
     operatorController.x().whileTrue(new Agitate(fuelSubsystem));
 
     // TESTING ONLY
     driverController.b().whileTrue(new DriveAway(driveSubsystem, 0.7, .5));
-    driverController.y().whileTrue(new ShootPreloadsSequence(fuelSubsystem, shooterSubsystem));
+    driverController.y().or(operatorController.rightTrigger()).whileTrue(new ShootPreloadsSequence(fuelSubsystem, shooterSubsystem));
     operatorController.start().onTrue(Commands.runOnce(driveSubsystem::testingOnlyReset));
 
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));

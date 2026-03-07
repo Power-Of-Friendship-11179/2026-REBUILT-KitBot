@@ -40,4 +40,8 @@ public class CANShooter extends SubsystemBase {
     public Command shoot() {
         return run(() -> shooterMotor.setVoltage(SmartDashboard.getNumber("Shooter shooting Voltage", SHOOTER_SHOOTING_VOLTAGE)));
     }
+
+    public void intake() {
+        shooterMotor.setVoltage(-SHOOTER_IDLE_VOLTAGE);
+    }
 }
