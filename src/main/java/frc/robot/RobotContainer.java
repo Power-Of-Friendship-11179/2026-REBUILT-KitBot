@@ -13,14 +13,13 @@ import static frc.robot.Constants.OperatorConstants.*;
 
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
-import frc.robot.auto.DriveAway;
 import frc.robot.auto.LeftSideShootPreloadsOnly;
 import frc.robot.auto.RightSideShootPreloadsOnly;
 import frc.robot.auto.ShootPreloadsOnly;
-import frc.robot.auto.ShootPreloadsSequence;
 import frc.robot.commands.Agitate;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Eject;
+import frc.robot.commands.FeedPlayers;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANDriveSubsystem;
@@ -58,10 +57,10 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem, shooterSubsystem));
     operatorController.a().whileTrue(new Eject(fuelSubsystem));
     operatorController.x().whileTrue(new Agitate(fuelSubsystem));
+    //operatorController.rightTrigger().whileTrue(long shot);
 
     // TESTING ONLY
-    driverController.b().whileTrue(new DriveAway(driveSubsystem, 0.7, .5));
-    driverController.y().or(operatorController.rightTrigger()).whileTrue(new ShootPreloadsSequence(fuelSubsystem, shooterSubsystem));
+    driverController.rightBumper().whileTrue(new FeedPlayers(fuelSubsystem));
     operatorController.start().onTrue(Commands.runOnce(driveSubsystem::testingOnlyReset));
 
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));
