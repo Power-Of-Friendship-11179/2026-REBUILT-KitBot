@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 
@@ -43,6 +45,19 @@ public final class Constants {
     public static final double WHEEL_VELOCITY_RPM_TO_MPS = WHEEL_TRAVEL_METERS_PER_ROT * (1.0 / 60.0);
 
     public static final double TRACK_WIDTH_METERS = Inches.of(21.75).in(Meters);
+    
+    public static final double kTurnP = 1;
+    public static final double kTurnD = 0;
+
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
+
+    public static final double kMaxTurnRateDegPerS = 100;
+    public static final double kMaxTurnAccelerationDegPerSSquared = 300;
+
+    public static final double ksVolts = 1;
+    public static final double kvVoltSecondsPerDegree = 0.8;
+    public static final double kaVoltSecondsSquaredPerDegree = 0.15;
   }
 
   public static final class FuelConstants {
@@ -94,6 +109,12 @@ public final class Constants {
     // switch. Note that all the measurements in this class could change too.
     public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout
         .loadField(AprilTagFields.k2026RebuiltAndymark);
+      
+    // Rotate a blue origin Pose2d about this point to make it work for red.
+    public static final Pose2d ROTATE_AROUND_FOR_RED = new Pose2d(
+            FieldConstants.FIELD_LAYOUT.getFieldLength() / 2.0,
+            FieldConstants.FIELD_LAYOUT.getFieldWidth() / 2.0,
+            Rotation2d.fromDegrees(180.0));
 
     public static final double TO_STARTING_LINE_METERS = Inches.of(156.06).in(Meters);
     public static final double LINE_WIDTHS_METERS = Inches.of(2.0).in(Meters);
@@ -101,6 +122,17 @@ public final class Constants {
     // Half 45 deg robot plus half hub depth = sides of position and aim triangle.
     public static final double SIDE_PRELOADS_ONLY_Y_OFFSET_METERS = (RobotConstants.DIAGONAL_WITH_BUMPERS_METERS / 2.0)
         + (HUB_X_DEPTH_METERS / 2.0);
+    
+    public static final double RAMP_FIELD_WIDTH_METERS = Inches.of(44.4).in(Meters);
+    public static final double RAMP_ANGLE_RADIANS = Math.toRadians(15.0);
+    public static final double RAMP_DRIVE_OVER_METERS = RAMP_FIELD_WIDTH_METERS / Math.cos(RAMP_ANGLE_RADIANS);
+    public static final double RAMP_TO_CENTER_LINE_METERS = Inches.of(121.3).in(Meters);
+    // Estimate in meters of distance from robot center to ramp after left or right
+    // side drive back and rotation.
+    public static final double ROBOT_TO_RAMP_EST_METERS = Inches.of(10.0).in(Meters)
+        + (RobotConstants.LENGTH_WITH_BUMPERS_METERS / 2.0);
+    public static final double DRIVE_TO_CENTER_OVER_RAMP_METERS = ROBOT_TO_RAMP_EST_METERS + RAMP_DRIVE_OVER_METERS
+        + RAMP_TO_CENTER_LINE_METERS;
   }
 
   public static final class RobotConstants {

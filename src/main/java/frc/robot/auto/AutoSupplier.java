@@ -3,7 +3,6 @@ package frc.robot.auto;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,10 +21,6 @@ import frc.robot.Constants.FieldConstants;
 public class AutoSupplier {
     private final Supplier<Command> commandSupplier;
     private final Pose2d startingPose2d;
-    private final Pose2d rotateAroundForRed = new Pose2d(
-            FieldConstants.FIELD_LAYOUT.getFieldLength() / 2.0,
-            FieldConstants.FIELD_LAYOUT.getFieldWidth() / 2.0,
-            Rotation2d.fromDegrees(180.0));
 
     /**
      * Creates a new auto supplier for the chooser.
@@ -50,8 +45,8 @@ public class AutoSupplier {
         final Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
         if (alliance == Alliance.Red) {
             return this.startingPose2d.rotateAround(
-                    rotateAroundForRed.getTranslation(),
-                    rotateAroundForRed.getRotation());
+                    FieldConstants.ROTATE_AROUND_FOR_RED.getTranslation(),
+                    FieldConstants.ROTATE_AROUND_FOR_RED.getRotation());
         }
         return this.startingPose2d;
     }
