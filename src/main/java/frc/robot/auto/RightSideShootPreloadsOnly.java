@@ -43,7 +43,6 @@ public class RightSideShootPreloadsOnly extends SequentialCommandGroup {
       final CANFuelSubsystem ballSubsystem,
       final CANShooter shooterSubsystem) {
     addCommands(
-        // TODO validate this. No driving may be needed.
         new DriveAway(driveSubsystem, 0.5, .5),
         new ShootPreloadsSequence(ballSubsystem, shooterSubsystem));
   }
