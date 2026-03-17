@@ -55,7 +55,7 @@ public class RobotContainer {
   private void configureBindings() {
     operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem, shooterSubsystem));
     operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem, shooterSubsystem));
-    operatorController.a().whileTrue(new Eject(fuelSubsystem));
+    operatorController.a().whileTrue(new Eject(fuelSubsystem, shooterSubsystem));
     operatorController.x().whileTrue(new Agitate(fuelSubsystem));
     //operatorController.rightTrigger().whileTrue(long shot);
 

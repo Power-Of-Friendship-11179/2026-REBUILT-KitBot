@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CANFuelSubsystem;
+import frc.robot.subsystems.CANShooter;
+
 import static frc.robot.Constants.FuelConstants.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -14,10 +16,12 @@ public class Eject extends Command {
   /** Creates a new Intake. */
 
   CANFuelSubsystem fuelSubsystem;
+  CANShooter shooter;
 
-  public Eject(CANFuelSubsystem fuelSystem) {
+  public Eject(CANFuelSubsystem fuelSystem, CANShooter shooter) {
     addRequirements(fuelSystem);
     this.fuelSubsystem = fuelSystem;
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled. Set the rollers to the
@@ -29,6 +33,7 @@ public class Eject extends Command {
             -1 * SmartDashboard.getNumber("Intaking intake roller value", INTAKING_INTAKE_VOLTAGE));
     fuelSubsystem
         .setFeederRoller(-1 * SmartDashboard.getNumber("Intaking feeder roller value", INTAKING_FEEDER_VOLTAGE));
+    shooter.intake();
   }
 
   // Called every time the scheduler runs while the command is scheduled. This
@@ -42,6 +47,7 @@ public class Eject extends Command {
   public void end(boolean interrupted) {
     fuelSubsystem.setIntakeLauncherRoller(0);
     fuelSubsystem.setFeederRoller(0);
+    shooter.stop();
   }
 
   // Returns true when the command should end.
