@@ -59,6 +59,8 @@ public final class Constants {
     public static final double ksVolts = 0.1;
     public static final double kvVoltSecondsPerDegree = 0.08;
     public static final double kaVoltSecondsSquaredPerDegree = 0.015;
+
+    public static final double DRIVE_DISTANCE_DUTY_CYCLE = 0.7;
   }
 
   public static final class FuelConstants {

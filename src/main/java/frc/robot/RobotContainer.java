@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import static frc.robot.Constants.OperatorConstants.*;
 
+import frc.robot.Constants.FieldConstants;
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
 import frc.robot.auto.LeftSideShootPreloadsOnly;
@@ -18,6 +19,7 @@ import frc.robot.auto.RightSideShootPreloadsOnly;
 import frc.robot.auto.ShootPreloadsOnly;
 import frc.robot.commands.Agitate;
 import frc.robot.commands.Drive;
+import frc.robot.commands.DriveDistance;
 import frc.robot.commands.Eject;
 import frc.robot.commands.FeedPlayers;
 import frc.robot.commands.Intake;
@@ -69,6 +71,8 @@ public class RobotContainer {
     driverController.povRight().whileTrue(new TurnToAngle(-90.0, driveSubsystem));
     driverController.povDown().whileTrue(new TurnToAngle(180.0, driveSubsystem));
     driverController.povLeft().whileTrue(new TurnToAngle(90.0, driveSubsystem));
+    driverController.x().whileTrue(new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS/4.0,
+                    driveSubsystem));
 
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));
     fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
