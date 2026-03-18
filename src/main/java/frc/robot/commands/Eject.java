@@ -19,7 +19,7 @@ public class Eject extends Command {
   CANShooter shooter;
 
   public Eject(CANFuelSubsystem fuelSystem, CANShooter shooter) {
-    addRequirements(fuelSystem);
+    addRequirements(fuelSystem,shooter);
     this.fuelSubsystem = fuelSystem;
     this.shooter = shooter;
   }

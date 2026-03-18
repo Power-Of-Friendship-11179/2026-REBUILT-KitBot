@@ -22,6 +22,7 @@ import frc.robot.commands.Eject;
 import frc.robot.commands.FeedPlayers;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CANShooter;
@@ -62,6 +63,12 @@ public class RobotContainer {
     // TESTING ONLY
     driverController.rightBumper().whileTrue(new FeedPlayers(fuelSubsystem));
     operatorController.start().onTrue(Commands.runOnce(driveSubsystem::testingOnlyReset));
+
+    // TEMP TESTING
+    driverController.povUp().whileTrue(new TurnToAngle(0.0, driveSubsystem));
+    driverController.povRight().whileTrue(new TurnToAngle(-90.0, driveSubsystem));
+    driverController.povDown().whileTrue(new TurnToAngle(180.0, driveSubsystem));
+    driverController.povLeft().whileTrue(new TurnToAngle(90.0, driveSubsystem));
 
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));
     fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));

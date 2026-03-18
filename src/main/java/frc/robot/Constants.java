@@ -46,18 +46,19 @@ public final class Constants {
 
     public static final double TRACK_WIDTH_METERS = Inches.of(21.75).in(Meters);
     
-    public static final double kTurnP = 1;
-    public static final double kTurnD = 0;
+    public static final double kTurnP = 0.036;
+    public static final double kTurnI = 0.08;
+    public static final double kTurnD = 0.0;
 
-    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnToleranceDeg = 2.0;
     public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
 
     public static final double kMaxTurnRateDegPerS = 100;
     public static final double kMaxTurnAccelerationDegPerSSquared = 300;
 
-    public static final double ksVolts = 1;
-    public static final double kvVoltSecondsPerDegree = 0.8;
-    public static final double kaVoltSecondsSquaredPerDegree = 0.15;
+    public static final double ksVolts = 0.1;
+    public static final double kvVoltSecondsPerDegree = 0.08;
+    public static final double kaVoltSecondsSquaredPerDegree = 0.015;
   }
 
   public static final class FuelConstants {

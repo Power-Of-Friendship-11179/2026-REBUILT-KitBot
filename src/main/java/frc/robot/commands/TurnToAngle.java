@@ -23,7 +23,7 @@ public class TurnToAngle extends Command {
     private  double targetHeading;
     private final ProfiledPIDController turnController = new ProfiledPIDController(
             DriveConstants.kTurnP,
-            0.0, // Do not mess with i and izone in time we have
+            DriveConstants.kTurnI,
             DriveConstants.kTurnD,
             new TrapezoidProfile.Constraints(
                     DriveConstants.kMaxTurnRateDegPerS,
@@ -38,11 +38,13 @@ public class TurnToAngle extends Command {
         this.drive = drive;
         // Set the controller to be continuous (because it is an angle controller)
         turnController.enableContinuousInput(-180, 180);
+        turnController.setIZone(10.0);
         this.addRequirements(this.drive);
     }
 
     @Override
     public void initialize() {
+        SmartDashboard.putBoolean("TurnToAngle", true);
         targetHeading = targetHeadingBlue;
         final Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
         if (alliance == Alliance.Red) {
@@ -50,6 +52,7 @@ public class TurnToAngle extends Command {
                     .rotateBy(FieldConstants.ROTATE_AROUND_FOR_RED.getRotation()).getDegrees();
         }
         turnController.setP(SmartDashboard.getNumber("Turn kP", DriveConstants.kTurnP));
+        turnController.setI(SmartDashboard.getNumber("Turn kI", DriveConstants.kTurnI));
         turnController.setD(SmartDashboard.getNumber("Turn kD", DriveConstants.kTurnD));
         // Set the controller tolerance - the delta tolerance ensures the robot is
         // stationary at the setpoint before it is considered as having reached the
@@ -62,12 +65,14 @@ public class TurnToAngle extends Command {
 
     @Override
     public void execute() {
+        double turnFB = turnController.calculate(drive.getPose().getRotation().getDegrees(), targetHeading);
+        SmartDashboard.putNumber("Turn FB", turnFB);
+        // Divide feedforward voltage by battery voltage to normalize it to [-1, 1]
+        double turnFF = turnFeedforward.calculate(turnController.getSetpoint().velocity) / RobotController.getBatteryVoltage();
+        SmartDashboard.putNumber("Turn FF", turnFF);
         drive.driveArcade(
                 0.0,
-                turnController.calculate(drive.getPose().getRotation().getDegrees(), targetHeading)
-                        // Divide feedforward voltage by battery voltage to normalize it to [-1, 1]
-                        + turnFeedforward.calculate(turnController.getSetpoint().velocity)
-                                / RobotController.getBatteryVoltage());
+                turnFB + turnFF);
     }
 
     @Override
@@ -77,6 +82,7 @@ public class TurnToAngle extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        SmartDashboard.putBoolean("TurnToAngle", false);
         drive.stop();
     }
 }
