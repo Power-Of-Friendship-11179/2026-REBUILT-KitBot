@@ -21,17 +21,18 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 
 /**
  * Provides the ability to drive around the field and maintain odometry.
@@ -77,7 +78,7 @@ public class CANDriveSubsystem extends SubsystemBase {
 
   // variables used in gyro stablized arcade drive (GSAD) and nowhere else.
   private boolean gsadActive = false;
-  private double gsadTargetHeadingDegrees = 0.0;
+  private double gsadTargetYawDegrees = 0.0;
   private static final double GSAD_KP = 0.025; // Just P if PID is used
 
   public CANDriveSubsystem() {
@@ -120,11 +121,11 @@ public class CANDriveSubsystem extends SubsystemBase {
 
     // TODO add custom standard deviations if needed.
     odometry = new DifferentialDrivePoseEstimator(
-      kinematics,
-      getYaw(),
-      0,
-      0,
-      Pose2d.kZero);
+        kinematics,
+        getYaw(),
+        0,
+        0,
+        Pose2d.kZero);
 
     SmartDashboard.putData(drive);
     SmartDashboard.putData(field);
@@ -157,7 +158,7 @@ public class CANDriveSubsystem extends SubsystemBase {
 
   /**
    * This is typically called when the automode command is chosen and ready to
-   * run. The selected automode should be mappable to an intented starting
+   * run. The selected automode should be mappable to an intended starting
    * {@link Pose2d}. This must be in the "Always blue origin" odometry scheme.
    * 
    * @param startingPose the robot's starting pose.
@@ -192,24 +193,22 @@ public class CANDriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Left Side Position", leftEncoder.getPosition());
     SmartDashboard.putNumber("Right Side Position", rightEncoder.getPosition());
     SmartDashboard.putBoolean("GSAD", gsadActive);
-    SmartDashboard.putNumber("GSAD Target", gsadTargetHeadingDegrees);
+    SmartDashboard.putNumber("GSAD Target", gsadTargetYawDegrees);
   }
 
   public void stop() {
-    drive.arcadeDrive(0.0, 0.0);
+    gyroStabilizedArcadeDrive(0.0, 0.0);
   }
 
-  public void driveArcade(double xSpeed, double zRotation) {
-    double driveStraightFudgeRotation = 0.0;
-    if (Math.abs(zRotation) < RobotDriveBase.kDefaultDeadband) {
-      driveStraightFudgeRotation = -1 * xSpeed * 0.20;
-    }
-    drive.arcadeDrive(xSpeed, zRotation + driveStraightFudgeRotation);
-  }
-
+  /**
+   * Any scaling and deadbanding of the inputs must be done before calling this
+   * method.
+   * 
+   * @param xSpeed    the forward (direction of intake) speed. Negative to go
+   *                  backward. [-1.0..1.0]
+   * @param zRotation the CCW positive z axis rotation. [-1.0..1.0]
+   */
   public void gyroStabilizedArcadeDrive(double xSpeed, double zRotation) {
-    xSpeed = MathUtil.applyDeadband(xSpeed, RobotDriveBase.kDefaultDeadband);
-    zRotation = MathUtil.applyDeadband(zRotation, RobotDriveBase.kDefaultDeadband);
     if ((zRotation != 0.0) || (xSpeed == 0.0)) {
       // Driver (human or auto) is rotating the robot or stopped.
       gsadActive = false;
@@ -222,17 +221,31 @@ public class CANDriveSubsystem extends SubsystemBase {
         // 180 to -180 jump which can cause uncontrolled spinning. It is
         // also okay to use since we are only using the delta and not
         // the angle value itself.
-        gsadTargetHeadingDegrees = getYawImpl();
+        gsadTargetYawDegrees = getYawImpl();
         gsadActive = true;
       }
       // Calculate corrective gsad rotation value.
-      zRotation = (gsadTargetHeadingDegrees - getYawImpl()) * GSAD_KP;
+      zRotation = (gsadTargetYawDegrees - getYawImpl()) * GSAD_KP;
     }
     drive.arcadeDrive(xSpeed, zRotation);
   }
 
-  public void driveTank(double leftSpeed, double rightSpeed) {
-    drive.tankDrive(leftSpeed, rightSpeed);
+  /**
+   * Only use in automode commands and then only very carefully.
+   * 
+   * @param blueForcedGSADTargetHeading
+   */
+  public void automodeOnlyForceGSADTargetHeading(final double blueForcedGSADTargetHeading) {
+    double forcedGSADTargetHeading = blueForcedGSADTargetHeading;
+    final Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
+    if (alliance == Alliance.Red) {
+      forcedGSADTargetHeading = Rotation2d.fromDegrees(blueForcedGSADTargetHeading)
+          .rotateBy(FieldConstants.ROTATE_AROUND_FOR_RED.getRotation())
+          .getDegrees();
+    }
+    // current yaw - (current heading - target heading) is target yaw.
+    gsadTargetYawDegrees = getYawImpl() - (getPose().getRotation().getDegrees() - forcedGSADTargetHeading);
+    gsadActive = true;
   }
 
   /**

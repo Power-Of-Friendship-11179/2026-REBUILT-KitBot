@@ -38,6 +38,11 @@ public class Drive extends Command {
   public void execute() {
     double xSpeed = MathUtil.applyDeadband(-controller.getLeftY() * DRIVE_SCALING, DRIVE_DEADBAND);
     double zRotation = MathUtil.applyDeadband(-controller.getRightX() * ROTATION_SCALING, DRIVE_DEADBAND);
+
+    if (controller.leftBumper().getAsBoolean()) {
+      xSpeed *= 0.6;
+      zRotation *= 0.6;
+    }
     driveSubsystem.gyroStabilizedArcadeDrive(xSpeed, zRotation);
   }
 

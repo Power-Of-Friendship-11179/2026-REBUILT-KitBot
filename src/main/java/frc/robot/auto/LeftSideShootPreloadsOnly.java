@@ -29,7 +29,7 @@ public class LeftSideShootPreloadsOnly extends SequentialCommandGroup {
                 - (RobotConstants.DIAGONAL_WITH_BUMPERS_METERS / 2.0),
             (FieldConstants.FIELD_LAYOUT.getFieldWidth() / 2.0)
                 + FieldConstants.SIDE_PRELOADS_ONLY_Y_OFFSET_METERS,
-            Rotation2d.fromDegrees(-135.0)));
+            Rotation2d.fromDegrees(135.0)));
   }
 
   private LeftSideShootPreloadsOnly(

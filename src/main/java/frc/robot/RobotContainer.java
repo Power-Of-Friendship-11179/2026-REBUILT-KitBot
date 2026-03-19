@@ -14,7 +14,9 @@ import static frc.robot.Constants.OperatorConstants.*;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
+import frc.robot.auto.LeftSideShootFromNeutral;
 import frc.robot.auto.LeftSideShootPreloadsOnly;
+import frc.robot.auto.RightSideShootFromNeutral;
 import frc.robot.auto.RightSideShootPreloadsOnly;
 import frc.robot.auto.ShootPreloadsOnly;
 import frc.robot.commands.Agitate;
@@ -52,6 +54,8 @@ public class RobotContainer {
     autoChooser.addOption("Shoot Preloads Only", ShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     autoChooser.addOption("Right Side Shoot Preloads Only", RightSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     autoChooser.addOption("Left Side Shoot Preloads Only", LeftSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Right Side With Neutral", RightSideShootFromNeutral.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Left Side With Neutral", LeftSideShootFromNeutral.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     SmartDashboard.putData(autoChooser);
   }
 
@@ -74,6 +78,7 @@ public class RobotContainer {
     driverController.x().whileTrue(new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS/4.0,
                     driveSubsystem));
 
+    // NOTE: don't bind to driver left bumper
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));
     fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
     shooterSubsystem.setDefaultCommand(shooterSubsystem.idle());

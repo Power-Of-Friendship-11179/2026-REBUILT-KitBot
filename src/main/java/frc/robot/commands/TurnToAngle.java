@@ -66,11 +66,11 @@ public class TurnToAngle extends Command {
     @Override
     public void execute() {
         double turnFB = turnController.calculate(drive.getPose().getRotation().getDegrees(), targetHeading);
-        SmartDashboard.putNumber("Turn FB", turnFB);
+        //SmartDashboard.putNumber("Turn FB", turnFB);
         // Divide feedforward voltage by battery voltage to normalize it to [-1, 1]
         double turnFF = turnFeedforward.calculate(turnController.getSetpoint().velocity) / RobotController.getBatteryVoltage();
-        SmartDashboard.putNumber("Turn FF", turnFF);
-        drive.driveArcade(
+        //SmartDashboard.putNumber("Turn FF", turnFF);
+        drive.gyroStabilizedArcadeDrive(
                 0.0,
                 turnFB + turnFF);
     }
