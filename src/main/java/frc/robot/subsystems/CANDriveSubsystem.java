@@ -234,8 +234,10 @@ public class CANDriveSubsystem extends SubsystemBase {
    * Only use in automode commands and then only very carefully.
    * 
    * @param blueForcedGSADTargetHeading
+   * 
+   * @return the forced target heading adjusted for blue or red.
    */
-  public void automodeOnlyForceGSADTargetHeading(final double blueForcedGSADTargetHeading) {
+  public double automodeOnlyForceGSADTargetHeading(final double blueForcedGSADTargetHeading) {
     double forcedGSADTargetHeading = blueForcedGSADTargetHeading;
     final Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Blue);
     if (alliance == Alliance.Red) {
@@ -244,8 +246,14 @@ public class CANDriveSubsystem extends SubsystemBase {
           .getDegrees();
     }
     // current yaw - (current heading - target heading) is target yaw.
-    gsadTargetYawDegrees = getYawImpl() - (getPose().getRotation().getDegrees() - forcedGSADTargetHeading);
+    double headingDiff = getPose().getRotation().getDegrees() - forcedGSADTargetHeading;
+    if (Math.abs(headingDiff) > 180.0) {
+      headingDiff = headingDiff + (forcedGSADTargetHeading * 2.0);
+    }
+    gsadTargetYawDegrees = getYawImpl() - headingDiff;
     gsadActive = true;
+
+    return forcedGSADTargetHeading;
   }
 
   /**

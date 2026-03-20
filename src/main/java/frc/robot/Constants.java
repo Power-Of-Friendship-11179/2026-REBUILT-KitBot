@@ -34,7 +34,7 @@ public final class Constants {
 
     // Current limit for drivetrain motors. 60A is a reasonable maximum to reduce
     // likelihood of tripping breakers or damaging CIM motors
-    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
+    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 50;
 
     public static final boolean LEFT_ENCODER_REVERSED = false;
     public static final boolean RIGHT_ENCODER_REVERSED = true;

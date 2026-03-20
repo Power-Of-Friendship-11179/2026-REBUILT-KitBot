@@ -9,10 +9,10 @@ import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CANShooter;
 
 public class QuickShootSequence extends ParallelDeadlineGroup {
-    public QuickShootSequence(CANFuelSubsystem ballSubsystem, CANShooter shooterSubsystem) {
+    public QuickShootSequence(CANFuelSubsystem ballSubsystem, CANShooter shooterSubsystem, double shootDurationSec) {
         super(new SequentialCommandGroup(
                 new SpinUp(ballSubsystem).withTimeout(FuelConstants.SPIN_UP_SECONDS),
-                new Launch(ballSubsystem).withTimeout(3.0)),
+                new Launch(ballSubsystem).withTimeout(shootDurationSec)),
         shooterSubsystem.shoot());
     }
 }

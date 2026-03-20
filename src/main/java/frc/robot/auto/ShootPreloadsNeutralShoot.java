@@ -5,7 +5,6 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FieldConstants;
@@ -28,21 +27,31 @@ public class ShootPreloadsNeutralShoot extends SequentialCommandGroup {
         final CANFuelSubsystem ballSubsystem,
         final CANShooter shooterSubsystem) {
     addCommands(
-        new DriveAway(driveSubsystem, 0.5, .5),
-        new QuickShootSequence(ballSubsystem, shooterSubsystem),
-        new TurnToAngle(BLUE_TO_NEUTRAL_HEADING, driveSubsystem).withTimeout(2.0),
+        new ParallelDeadlineGroup(
+            new DriveAway(driveSubsystem, 0.5, .5),
+            shooterSubsystem.idle()),
+        new ParallelDeadlineGroup(
+            new QuickShootSequence(ballSubsystem, shooterSubsystem, 3.0),
+            driveSubsystem.run(driveSubsystem::stop)),
+        new ParallelDeadlineGroup(
+            new TurnToAngle(BLUE_TO_NEUTRAL_HEADING, driveSubsystem).withTimeout(2.0),
+            shooterSubsystem.stop()),
         Commands.runOnce(() -> driveSubsystem.automodeOnlyForceGSADTargetHeading(BLUE_TO_NEUTRAL_HEADING)),
         new ParallelDeadlineGroup(
             new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS,
                     driveSubsystem),
             new Intake(ballSubsystem, shooterSubsystem)),
         Commands.runOnce(() -> driveSubsystem.automodeOnlyForceGSADTargetHeading(BLUE_TO_NEUTRAL_HEADING)),
-        new ParallelCommandGroup(
+        new ParallelDeadlineGroup(
             new DriveDistance(-FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS,
                     driveSubsystem),
             new Intake(ballSubsystem, shooterSubsystem).withTimeout(0.5)),
-        new TurnToAngle(blueShotHeading, driveSubsystem).withTimeout(3.0),
+        new ParallelDeadlineGroup(
+            new TurnToAngle(blueShotHeading, driveSubsystem).withTimeout(3.0),
+            shooterSubsystem.idle()),
         // TODO should we add a small GSAD movement to align better?
-        new QuickShootSequence(ballSubsystem, shooterSubsystem));
+        new ParallelDeadlineGroup(
+            new QuickShootSequence(ballSubsystem, shooterSubsystem, 5.0),
+            driveSubsystem.run(driveSubsystem::stop)));
     }
 }
