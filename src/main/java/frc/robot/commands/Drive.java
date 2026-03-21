@@ -39,9 +39,17 @@ public class Drive extends Command {
     double xSpeed = MathUtil.applyDeadband(-controller.getLeftY() * DRIVE_SCALING, DRIVE_DEADBAND);
     double zRotation = MathUtil.applyDeadband(-controller.getRightX() * ROTATION_SCALING, DRIVE_DEADBAND);
 
-    if (controller.leftBumper().getAsBoolean()) {
+    // TODO: clean this up
+    // left bumper is 100%
+    // left trigger is 60%
+    // normal is 80%
+    if (controller.leftTrigger().getAsBoolean()) {
       xSpeed *= 0.6;
       zRotation *= 0.6;
+    }
+    else if (!controller.leftBumper().getAsBoolean()) {
+      xSpeed *= 0.8;
+      zRotation *= 0.8;
     }
     driveSubsystem.gyroStabilizedArcadeDrive(xSpeed, zRotation);
   }

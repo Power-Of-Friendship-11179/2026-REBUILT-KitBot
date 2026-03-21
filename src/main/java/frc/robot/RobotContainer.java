@@ -4,21 +4,24 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.OperatorConstants.DRIVER_CONTROLLER_PORT;
+import static frc.robot.Constants.OperatorConstants.OPERATOR_CONTROLLER_PORT;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import static frc.robot.Constants.OperatorConstants.*;
-
 import frc.robot.Constants.FieldConstants;
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
+import frc.robot.auto.DriveAway;
 import frc.robot.auto.LeftSideShootFromNeutral;
 import frc.robot.auto.LeftSideShootPreloadsOnly;
 import frc.robot.auto.RightSideShootFromNeutral;
 import frc.robot.auto.RightSideShootPreloadsOnly;
 import frc.robot.auto.ShootPreloadsOnly;
+import frc.robot.auto.ShootPreloadsSequence;
 import frc.robot.commands.Agitate;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveDistance;
@@ -26,7 +29,6 @@ import frc.robot.commands.Eject;
 import frc.robot.commands.FeedPlayers;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
-import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CANShooter;
@@ -71,12 +73,14 @@ public class RobotContainer {
     operatorController.start().onTrue(Commands.runOnce(driveSubsystem::testingOnlyReset));
 
     // TEMP TESTING
-    driverController.povUp().whileTrue(new TurnToAngle(0.0, driveSubsystem));
-    driverController.povRight().whileTrue(new TurnToAngle(-90.0, driveSubsystem));
-    driverController.povDown().whileTrue(new TurnToAngle(180.0, driveSubsystem));
-    driverController.povLeft().whileTrue(new TurnToAngle(90.0, driveSubsystem));
+    //driverController.povUp().whileTrue(new TurnToAngle(0.0, driveSubsystem));
+    //driverController.povRight().whileTrue(new TurnToAngle(-90.0, driveSubsystem));
+    //driverController.povDown().whileTrue(new TurnToAngle(180.0, driveSubsystem));
+    //driverController.povLeft().whileTrue(new TurnToAngle(90.0, driveSubsystem));
     driverController.x().whileTrue(new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS/4.0,
                     driveSubsystem));
+    driverController.povUp().whileTrue(new DriveAway(driveSubsystem, 0.5, .5));
+    driverController.povDown().whileTrue(new ShootPreloadsSequence(fuelSubsystem, shooterSubsystem));
 
     // NOTE: don't bind to driver left bumper
     driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, driverController));

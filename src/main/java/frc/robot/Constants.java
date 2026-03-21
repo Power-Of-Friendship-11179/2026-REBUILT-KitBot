@@ -60,7 +60,7 @@ public final class Constants {
     public static final double kvVoltSecondsPerDegree = 0.08;
     public static final double kaVoltSecondsSquaredPerDegree = 0.015;
 
-    public static final double DRIVE_DISTANCE_DUTY_CYCLE = 0.7;
+    public static final double DRIVE_DISTANCE_DUTY_CYCLE = 0.6;
   }
 
   public static final class FuelConstants {
@@ -69,8 +69,8 @@ public final class Constants {
     public static final int INTAKE_LAUNCHER_MOTOR_ID = 1;   
 
     // Current limit and nominal voltage for fuel mechanism motors.
-    public static final int FEEDER_MOTOR_CURRENT_LIMIT = 60;
-    public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 60;
+    public static final int FEEDER_MOTOR_CURRENT_LIMIT = 50;
+    public static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 50;
 
     // Voltage values for various fuel operations. These values may need to be tuned
     // based on exact robot construction.
@@ -135,7 +135,7 @@ public final class Constants {
     public static final double ROBOT_TO_RAMP_EST_METERS = Inches.of(10.0).in(Meters)
         + (RobotConstants.LENGTH_WITH_BUMPERS_METERS / 2.0);
     public static final double DRIVE_TO_CENTER_OVER_RAMP_METERS = ROBOT_TO_RAMP_EST_METERS + RAMP_DRIVE_OVER_METERS
-        + RAMP_TO_CENTER_LINE_METERS;
+        + RAMP_TO_CENTER_LINE_METERS - 1.5;
   }
 
   public static final class RobotConstants {
