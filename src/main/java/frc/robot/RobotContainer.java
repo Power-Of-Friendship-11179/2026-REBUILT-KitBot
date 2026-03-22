@@ -16,6 +16,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
 import frc.robot.auto.DriveAway;
+import frc.robot.auto.LeftSideShootFromDepot;
 import frc.robot.auto.LeftSideShootFromNeutral;
 import frc.robot.auto.LeftSideShootPreloadsOnly;
 import frc.robot.auto.RightSideShootFromNeutral;
@@ -58,6 +59,8 @@ public class RobotContainer {
     autoChooser.addOption("Left Side Shoot Preloads Only", LeftSideShootPreloadsOnly.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     autoChooser.addOption("Right Side With Neutral", RightSideShootFromNeutral.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     autoChooser.addOption("Left Side With Neutral", LeftSideShootFromNeutral.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Left Side With Depot", LeftSideShootFromDepot.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+
     SmartDashboard.putData(autoChooser);
   }
 
