@@ -26,7 +26,7 @@ public class CANShooter extends SubsystemBase {
         shooterConfig.idleMode(IdleMode.kCoast);
         shooterMotor.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        SmartDashboard.putNumber("Shooter shooting Voltage", SHOOTER_SHOOTING_VOLTAGE);
+        //SmartDashboard.putNumber("Shooter shooting Voltage", SHOOTER_SHOOTING_VOLTAGE);
     }
 
     public Command stop() {

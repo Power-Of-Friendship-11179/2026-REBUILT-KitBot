@@ -129,11 +129,11 @@ public class CANDriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putData(drive);
     SmartDashboard.putData(field);
-    SmartDashboard.putNumber("Turn kP", DriveConstants.kTurnP);
-    SmartDashboard.putNumber("Turn kI", DriveConstants.kTurnI);
-    SmartDashboard.putNumber("Turn kD", DriveConstants.kTurnD);
-    SmartDashboard.putNumber("Turn Tol Deg", DriveConstants.kTurnToleranceDeg);
-    SmartDashboard.putNumber("Turn Rate Tol Deg Per Sec", DriveConstants.kTurnRateToleranceDegPerS);
+    //SmartDashboard.putNumber("Turn kP", DriveConstants.kTurnP);
+    //SmartDashboard.putNumber("Turn kI", DriveConstants.kTurnI);
+    //SmartDashboard.putNumber("Turn kD", DriveConstants.kTurnD);
+    //SmartDashboard.putNumber("Turn Tol Deg", DriveConstants.kTurnToleranceDeg);
+    //SmartDashboard.putNumber("Turn Rate Tol Deg Per Sec", DriveConstants.kTurnRateToleranceDegPerS);
   }
 
   /**

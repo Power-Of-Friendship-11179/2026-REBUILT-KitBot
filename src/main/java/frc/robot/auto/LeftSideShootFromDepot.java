@@ -28,7 +28,7 @@ public class LeftSideShootFromDepot extends SequentialCommandGroup {
     private static final double BLUE_TO_DEPOT_HEADING = 157.5;
     private static final double DRIVE_TO_DEPOT_METERS = Inches.of(115.0).in(Meters);
     private static final double BLUE_FROM_DEPOT_HEADING = 146.25;
-    private static final double DRIVE_FROM_DEPOT_METERS = Inches.of(115.0).in(Meters);;
+    private static final double DRIVE_FROM_DEPOT_METERS = Inches.of(-115.0).in(Meters);;
 
     private static final Pose2d BLUE_POSE = new Pose2d(
             FieldConstants.TO_STARTING_LINE_METERS + FieldConstants.LINE_WIDTHS_METERS

@@ -48,8 +48,8 @@ public class Drive extends Command {
       zRotation *= 0.6;
     }
     else if (!controller.leftBumper().getAsBoolean()) {
-      xSpeed *= 0.8;
-      zRotation *= 0.8;
+      xSpeed *= 0.75;
+      zRotation *= 0.75;
     }
     driveSubsystem.gyroStabilizedArcadeDrive(xSpeed, zRotation);
   }

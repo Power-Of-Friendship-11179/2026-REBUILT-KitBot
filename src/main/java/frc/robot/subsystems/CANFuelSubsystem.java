@@ -45,12 +45,12 @@ public class CANFuelSubsystem extends SubsystemBase {
     // all commands using this subsystem pull values from the dashbaord to allow
     // you to tune the values easily, and then replace the values in Constants.java
     // with your new values. For more information, see the Software Guide.
-    SmartDashboard.putNumber("Agitation feeder roller value", AGITATION_FEEDER_VOLTAGE);
-    SmartDashboard.putNumber("Intaking feeder roller value", INTAKING_FEEDER_VOLTAGE);
-    SmartDashboard.putNumber("Intaking intake roller value", INTAKING_INTAKE_VOLTAGE);
-    SmartDashboard.putNumber("Launching feeder roller value", LAUNCHING_FEEDER_VOLTAGE);
-    SmartDashboard.putNumber("Launching intake roller value", LAUNCHING_INTAKE_VOLTAGE);
-    SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
+    //SmartDashboard.putNumber("Agitation feeder roller value", AGITATION_FEEDER_VOLTAGE);
+    //SmartDashboard.putNumber("Intaking feeder roller value", INTAKING_FEEDER_VOLTAGE);
+    //SmartDashboard.putNumber("Intaking intake roller value", INTAKING_INTAKE_VOLTAGE);
+    //SmartDashboard.putNumber("Launching feeder roller value", LAUNCHING_FEEDER_VOLTAGE);
+    //SmartDashboard.putNumber("Launching intake roller value", LAUNCHING_INTAKE_VOLTAGE);
+    //SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
   }
 
   // A method to set the voltage of the intake roller
