@@ -33,6 +33,7 @@ import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.CANShooter;
+import frc.robot.subsystems.HubStatusSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,6 +46,7 @@ public class RobotContainer {
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
   private final CANShooter shooterSubsystem = new CANShooter();
+  private final HubStatusSubsystem hubStatusSubsystem = new HubStatusSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(DRIVER_CONTROLLER_PORT);
   private final CommandXboxController operatorController = new CommandXboxController(OPERATOR_CONTROLLER_PORT);
