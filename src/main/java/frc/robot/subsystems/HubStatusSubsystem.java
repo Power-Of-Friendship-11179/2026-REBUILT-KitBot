@@ -56,6 +56,13 @@ public class HubStatusSubsystem extends SubsystemBase {
   private static final long PULSING_DURATION_MILLIS = 3000;
   private static final long PULSE_PERIOD_MILLIS = 500;
   private static final long AUTO_RESULT_DISPLAY_MILLIS = 2000;
+  /**
+   * When shifting from inactive to active, we want to start the shift, and its
+   * associated pulsing early. This is to enable the drivers to start shooting as
+   * early as possible. Once the auto winner is determined, our shift start times
+   * in {@link #SHIFT_CHANGES} are adjusted earlier by this amount.
+   */
+  private static final long EARLY_SHIFT_START_MILLIS = 1500;
 
   private static final String DASHBOARD_FIELD = "Hub Active";
   private static final String RED_HEX = new Color(255, 0, 0).toHexString();
@@ -178,9 +185,15 @@ public class HubStatusSubsystem extends SubsystemBase {
         autoResultDisplayMillis = (System.currentTimeMillis() - telopStartMillis) + AUTO_RESULT_DISPLAY_MILLIS;
         if (autoWinner == DriverStation.getAlliance().orElse(Alliance.Blue).name().charAt(0)) {
           weWonAuto = true;
+          SHIFT_CHANGES[2] -= EARLY_SHIFT_START_MILLIS;
+          SHIFT_CHANGES[4] -= EARLY_SHIFT_START_MILLIS;
+          // No need to adjust 5/end game as we are active from 4 into end game.
           displayWonAuto();
         } else {
           weWonAuto = false;
+          // No need to adjust 1 as we are active for auto into 1.
+          SHIFT_CHANGES[3] -= EARLY_SHIFT_START_MILLIS;
+          SHIFT_CHANGES[5] -= EARLY_SHIFT_START_MILLIS;
           displayLostAuto();
         }
         CommandScheduler.getInstance().schedule(
