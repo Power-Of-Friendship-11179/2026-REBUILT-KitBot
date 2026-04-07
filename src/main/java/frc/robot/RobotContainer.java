@@ -80,7 +80,7 @@ public class RobotContainer {
     //driverController.povRight().whileTrue(new TurnToAngle(-90.0, driveSubsystem));
     //driverController.povDown().whileTrue(new TurnToAngle(180.0, driveSubsystem));
     //driverController.povLeft().whileTrue(new TurnToAngle(90.0, driveSubsystem));
-    driverController.x().whileTrue(new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS/4.0,
+    driverController.x().whileTrue(new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS/4.0, 0.6,
                     driveSubsystem));
     driverController.povUp().whileTrue(new DriveAway(driveSubsystem, 0.5, .5));
     driverController.povDown().whileTrue(new ShootPreloadsSequence(fuelSubsystem, shooterSubsystem));

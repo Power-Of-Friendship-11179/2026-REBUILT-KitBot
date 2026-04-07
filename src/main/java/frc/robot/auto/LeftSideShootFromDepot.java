@@ -60,13 +60,13 @@ public class LeftSideShootFromDepot extends SequentialCommandGroup {
 
                 Commands.runOnce(() -> driveSubsystem.automodeOnlyForceGSADTargetHeading(BLUE_TO_DEPOT_HEADING)),
                 new ParallelDeadlineGroup(
-                        new DriveDistance(DRIVE_TO_DEPOT_METERS,
+                        new DriveDistance(DRIVE_TO_DEPOT_METERS, 0.6,
                                 driveSubsystem).withTimeout(6.0),
                         new Intake(ballSubsystem, shooterSubsystem)),
 
                 Commands.runOnce(() -> driveSubsystem.automodeOnlyForceGSADTargetHeading(BLUE_FROM_DEPOT_HEADING)),
                 new ParallelDeadlineGroup(
-                        new DriveDistance(DRIVE_FROM_DEPOT_METERS,
+                        new DriveDistance(DRIVE_FROM_DEPOT_METERS, 0.6,
                                 driveSubsystem),
                         shooterSubsystem.idle()),
 

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.ShooterConstants.SHOOTER_CAN_ID;
 import static frc.robot.Constants.ShooterConstants.SHOOTER_CURRENT_LIMIT;
+import static frc.robot.Constants.ShooterConstants.SHOOTER_FOLLOWER_CAN_ID;
 import static frc.robot.Constants.ShooterConstants.SHOOTER_IDLE_VOLTAGE;
 import static frc.robot.Constants.ShooterConstants.SHOOTER_SHOOTING_VOLTAGE;
 
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CANShooter extends SubsystemBase {
     private SparkFlex shooterMotor = new SparkFlex(SHOOTER_CAN_ID, MotorType.kBrushless);
+    private SparkFlex shooterFollower = new SparkFlex(SHOOTER_FOLLOWER_CAN_ID, MotorType.kBrushless);
 
     public CANShooter() {
         final SparkFlexConfig shooterConfig = new SparkFlexConfig();
@@ -26,7 +28,10 @@ public class CANShooter extends SubsystemBase {
         shooterConfig.idleMode(IdleMode.kCoast);
         shooterMotor.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        //SmartDashboard.putNumber("Shooter shooting Voltage", SHOOTER_SHOOTING_VOLTAGE);
+        shooterConfig.follow(shooterMotor, true);
+        shooterFollower.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        SmartDashboard.putNumber("Shooter shooting Voltage", SHOOTER_SHOOTING_VOLTAGE);
     }
 
     public Command stop() {

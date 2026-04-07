@@ -86,10 +86,11 @@ public final class Constants {
 
   public static final class ShooterConstants {
     public static final int SHOOTER_CAN_ID = 7;
+    public static final int SHOOTER_FOLLOWER_CAN_ID = 9;
     public static final int SHOOTER_CURRENT_LIMIT = 60;
 
     public static final double SHOOTER_IDLE_VOLTAGE = -1.5;
-    public static final double SHOOTER_SHOOTING_VOLTAGE = -6.0;
+    public static final double SHOOTER_SHOOTING_VOLTAGE = -5.125;
   }
 
   public static final class OperatorConstants {

@@ -90,6 +90,7 @@ public class CANDriveSubsystem extends SubsystemBase {
     SparkMaxConfig config = new SparkMaxConfig();
     config.voltageCompensation(12);
     config.smartCurrentLimit(DRIVE_MOTOR_CURRENT_LIMIT);
+    config.openLoopRampRate(0.5);
 
     // Set configuration to follow each leader and then apply it to corresponding
     // follower. Resetting in case a new controller is swapped
@@ -226,6 +227,8 @@ public class CANDriveSubsystem extends SubsystemBase {
       }
       // Calculate corrective gsad rotation value.
       zRotation = (gsadTargetYawDegrees - getYawImpl()) * GSAD_KP;
+      // TODO: remove this after done
+      SmartDashboard.putNumber("zRotation", zRotation);
     }
     drive.arcadeDrive(xSpeed, zRotation);
   }

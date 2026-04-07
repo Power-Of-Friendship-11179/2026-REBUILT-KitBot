@@ -11,10 +11,10 @@ public class DriveDistance extends Command {
     private final double xSpeed;
     private Pose2d start;
 
-    public DriveDistance(final double meters, final CANDriveSubsystem drive) {
+    public DriveDistance(final double meters, final double speed, final CANDriveSubsystem drive) {
         this.drive = drive;
         this.meters = meters;
-        this.xSpeed = Math.copySign(DriveConstants.DRIVE_DISTANCE_DUTY_CYCLE, this.meters);
+        this.xSpeed = Math.copySign(speed, this.meters);
         this.addRequirements(this.drive);
     }
 

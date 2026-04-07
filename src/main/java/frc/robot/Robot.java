@@ -109,7 +109,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Alliance Score Period", 30 - (DriverStation.getMatchTime() % 30));
+    //SmartDashboard.putNumber("Alliance Score Period", (DriverStation.getMatchTime() % 30));
   }
 
   @Override

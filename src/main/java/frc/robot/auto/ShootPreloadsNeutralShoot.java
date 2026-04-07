@@ -38,12 +38,12 @@ public class ShootPreloadsNeutralShoot extends SequentialCommandGroup {
             shooterSubsystem.stop()),
         Commands.runOnce(() -> driveSubsystem.automodeOnlyForceGSADTargetHeading(BLUE_TO_NEUTRAL_HEADING)),
         new ParallelDeadlineGroup(
-            new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS,
+            new DriveDistance(FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS, 0.6,
                     driveSubsystem),
             new Intake(ballSubsystem, shooterSubsystem)),
         Commands.runOnce(() -> driveSubsystem.automodeOnlyForceGSADTargetHeading(BLUE_TO_NEUTRAL_HEADING)),
         new ParallelDeadlineGroup(
-            new DriveDistance(-FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS,
+            new DriveDistance(-FieldConstants.DRIVE_TO_CENTER_OVER_RAMP_METERS, 0.6,
                     driveSubsystem),
             new Intake(ballSubsystem, shooterSubsystem).withTimeout(0.5)),
         new ParallelDeadlineGroup(
