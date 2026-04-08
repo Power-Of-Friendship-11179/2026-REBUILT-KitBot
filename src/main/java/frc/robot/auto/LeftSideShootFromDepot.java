@@ -25,9 +25,9 @@ import frc.robot.subsystems.CANShooter;
  * of the hub.
  */
 public class LeftSideShootFromDepot extends SequentialCommandGroup {
-    private static final double BLUE_TO_DEPOT_HEADING = 157.5;
-    private static final double DRIVE_TO_DEPOT_METERS = Inches.of(115.0).in(Meters);
-    private static final double BLUE_FROM_DEPOT_HEADING = 146.25;
+    private static final double BLUE_TO_DEPOT_HEADING = 167.0;
+    private static final double DRIVE_TO_DEPOT_METERS = Inches.of(120.0).in(Meters);
+    private static final double BLUE_FROM_DEPOT_HEADING = 153.0;
     private static final double DRIVE_FROM_DEPOT_METERS = Inches.of(-115.0).in(Meters);;
 
     private static final Pose2d BLUE_POSE = new Pose2d(
@@ -68,7 +68,8 @@ public class LeftSideShootFromDepot extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(
                         new DriveDistance(DRIVE_FROM_DEPOT_METERS, 0.6,
                                 driveSubsystem),
-                        shooterSubsystem.idle()),
+                        new Intake(ballSubsystem, shooterSubsystem).withTimeout(2.0)
+                                .andThen(shooterSubsystem.idle())),
 
                 // TODO should we add a small GSAD movement to align better?
                 new ParallelDeadlineGroup(
