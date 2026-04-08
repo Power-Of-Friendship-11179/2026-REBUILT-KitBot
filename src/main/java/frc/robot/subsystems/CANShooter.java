@@ -49,4 +49,9 @@ public class CANShooter extends SubsystemBase {
     public void intake() {
         shooterMotor.setVoltage(-SHOOTER_IDLE_VOLTAGE);
     }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Shooter RPM", shooterMotor.getEncoder().getVelocity());
+    }
 }
