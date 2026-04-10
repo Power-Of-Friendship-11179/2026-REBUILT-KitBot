@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import frc.robot.Constants.FuelConstants;
 
 /**
  * This subsystem tracks the status of the hub and relays it to the drivers.
@@ -62,7 +63,8 @@ public class HubStatusSubsystem extends SubsystemBase {
    * early as possible. Once the auto winner is determined, our shift start times
    * in {@link #SHIFT_CHANGES} are adjusted earlier by this amount.
    */
-  private static final long EARLY_SHIFT_START_MILLIS = 1500;
+  private static final long EARLY_SHIFT_START_MILLIS = Double
+      .valueOf(FuelConstants.SPIN_UP_SECONDS * 1000.0).longValue() + 1000;
 
   private static final String DASHBOARD_FIELD = "Hub Active";
   private static final String RED_HEX = new Color(255, 0, 0).toHexString();
@@ -103,7 +105,6 @@ public class HubStatusSubsystem extends SubsystemBase {
    * Create subsystem and bind robot mode commands.
    */
   public HubStatusSubsystem() {
-    RobotModeTriggers.disabled().onTrue(runOnce(this::setInactive));
     RobotModeTriggers.autonomous().onTrue(runOnce(this::setActive));
     RobotModeTriggers.teleop().onTrue(run(this::startTeleop));
   }
@@ -163,6 +164,7 @@ public class HubStatusSubsystem extends SubsystemBase {
    * recorded.
    */
   private void initializeTeleop() {
+    initialized = false;
     setActive();
     telopStartMillis = System.currentTimeMillis();
   }
@@ -240,7 +242,7 @@ public class HubStatusSubsystem extends SubsystemBase {
       nextShift++;
       nextPulseStart = SHIFT_CHANGES[nextShift] - PULSING_DURATION_MILLIS;
     } else {
-      manageEndStagePulsing(elapsed);
+      manageEndOfShiftPulsing(elapsed);
     }
   }
 
@@ -273,7 +275,7 @@ public class HubStatusSubsystem extends SubsystemBase {
    * 
    * @param teleopElapsedMillis the teleop elapsed time in milliseconds.
    */
-  private void manageEndStagePulsing(final long teleopElapsedMillis) {
+  private void manageEndOfShiftPulsing(final long teleopElapsedMillis) {
     if ((teleopElapsedMillis > nextPulseStart) && !(nextShift == 1 && !weWonAuto)) {
       // Dashboard pulsing
       long pulsedSoFar = teleopElapsedMillis - nextPulseStart;
@@ -295,5 +297,14 @@ public class HubStatusSubsystem extends SubsystemBase {
         }
       }
     }
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("initialized", initialized);
+    SmartDashboard.putBoolean("have game data", haveGameData);
+    SmartDashboard.putBoolean("won auto", weWonAuto);
+    SmartDashboard.putBoolean("active", weAreActive);
+    SmartDashboard.putString("driver feedback", currentFeedback.name());
   }
 }
