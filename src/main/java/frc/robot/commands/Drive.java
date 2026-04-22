@@ -51,7 +51,8 @@ public class Drive extends Command {
       xSpeed *= 0.75;
       zRotation *= 0.75;
     }
-    driveSubsystem.gyroStabilizedArcadeDrive(xSpeed, zRotation);
+    //driveSubsystem.gyroStabilizedArcadeDrive(xSpeed, zRotation);
+    driveSubsystem.arcadeDriveNormal(xSpeed, zRotation);
   }
 
   // Called once the command ends or is interrupted.

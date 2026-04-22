@@ -233,6 +233,10 @@ public class CANDriveSubsystem extends SubsystemBase {
     drive.arcadeDrive(xSpeed, zRotation);
   }
 
+  public void arcadeDriveNormal(double xSpeed, double zRotation) {
+    drive.arcadeDrive(xSpeed, zRotation);
+  }
+
   /**
    * Only use in automode commands and then only very carefully.
    * 
@@ -250,8 +254,10 @@ public class CANDriveSubsystem extends SubsystemBase {
     }
     // current yaw - (current heading - target heading) is target yaw.
     double headingDiff = getPose().getRotation().getDegrees() - forcedGSADTargetHeading;
-    if (Math.abs(headingDiff) > 180.0) {
-      headingDiff = headingDiff + (forcedGSADTargetHeading * 2.0);
+    if (headingDiff > 180.0) {
+      headingDiff = headingDiff - 360.0;
+    } else if (headingDiff < -180.0) {
+      headingDiff = headingDiff + 360.0;
     }
     gsadTargetYawDegrees = getYawImpl() - headingDiff;
     gsadActive = true;

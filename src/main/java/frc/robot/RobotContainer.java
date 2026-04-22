@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.auto.AltLeftSideShootFromDepot;
 import frc.robot.auto.AutoSupplier;
 import frc.robot.auto.DoNothing;
 import frc.robot.auto.DriveAway;
 import frc.robot.auto.LeftSideShootFromDepot;
+import frc.robot.auto.CenterShootFromDepot;
 import frc.robot.auto.LeftSideShootFromNeutral;
 import frc.robot.auto.LeftSideShootPreloadsOnly;
 import frc.robot.auto.RightSideShootFromNeutral;
@@ -46,7 +48,7 @@ public class RobotContainer {
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem fuelSubsystem = new CANFuelSubsystem();
   private final CANShooter shooterSubsystem = new CANShooter();
-  private final HubStatusSubsystem hubStatusSubsystem = new HubStatusSubsystem();
+  //private final HubStatusSubsystem hubStatusSubsystem = new HubStatusSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(DRIVER_CONTROLLER_PORT);
   private final CommandXboxController operatorController = new CommandXboxController(OPERATOR_CONTROLLER_PORT);
@@ -62,6 +64,8 @@ public class RobotContainer {
     autoChooser.addOption("Right Side With Neutral", RightSideShootFromNeutral.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     autoChooser.addOption("Left Side With Neutral", LeftSideShootFromNeutral.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
     autoChooser.addOption("Left Side With Depot", LeftSideShootFromDepot.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Alt Left Side With Depot", AltLeftSideShootFromDepot.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
+    autoChooser.addOption("Center Side With Depot", CenterShootFromDepot.getAutoSupplier(driveSubsystem, fuelSubsystem, shooterSubsystem));
 
     SmartDashboard.putData(autoChooser);
   }

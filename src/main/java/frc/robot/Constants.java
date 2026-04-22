@@ -80,7 +80,7 @@ public final class Constants {
     public static final double INTAKING_INTAKE_VOLTAGE = -5;
     public static final double LAUNCHING_FEEDER_VOLTAGE = -9;
     public static final double LAUNCHING_INTAKE_VOLTAGE = -7.95;
-    public static final double SPIN_UP_FEEDER_VOLTAGE = 6;
+    public static final double SPIN_UP_FEEDER_VOLTAGE = 3;
     public static final double SPIN_UP_SECONDS = 1;
   }
 
@@ -90,7 +90,7 @@ public final class Constants {
     public static final int SHOOTER_CURRENT_LIMIT = 60;
 
     public static final double SHOOTER_IDLE_VOLTAGE = -1.5;
-    public static final double SHOOTER_SHOOTING_VOLTAGE = -5.125;
+    public static final double SHOOTER_SHOOTING_VOLTAGE = -5.25;
   }
 
   public static final class OperatorConstants {

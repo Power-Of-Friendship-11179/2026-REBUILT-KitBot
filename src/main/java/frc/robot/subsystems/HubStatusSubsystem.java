@@ -106,7 +106,7 @@ public class HubStatusSubsystem extends SubsystemBase {
    */
   public HubStatusSubsystem() {
     RobotModeTriggers.autonomous().onTrue(runOnce(this::setActive));
-    RobotModeTriggers.teleop().onTrue(run(this::startTeleop));
+    RobotModeTriggers.teleop().onTrue(this.startTeleop());
   }
 
   /**
@@ -190,7 +190,7 @@ public class HubStatusSubsystem extends SubsystemBase {
           SHIFT_CHANGES[2] -= EARLY_SHIFT_START_MILLIS;
           SHIFT_CHANGES[4] -= EARLY_SHIFT_START_MILLIS;
           // No need to adjust 5/end game as we are active from 4 into end game.
-          displayWonAuto();
+          //displayWonAuto();
         } else {
           weWonAuto = false;
           // No need to adjust 1 as we are active for auto into 1.
